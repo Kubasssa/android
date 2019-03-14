@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import javax.xml.transform.Result;
 import java.util.ArrayList;
@@ -25,22 +26,22 @@ public class Main extends AppCompatActivity {
     ImageButton deleteButton;
     EditText resultBar ;
 
-    float mValueOne , mValueTwo;
     double result;
-    List<Double> numberList;
-    List<String> operatorList;
-    int numberOfDigits;
-    boolean mAddition , mSubtract ,mMultiplication ,mDivision, isOperator ;
+    boolean mAddition , mSubtract ,mMultiplication ,mDivision, isOperator, comaFlag ;
+    DigitsNOperatorsLists digitsNOperatorsLists;
+    MathematicOperations mathematicOperations;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        numberList = new ArrayList();
-        operatorList = new ArrayList<>();
-        numberOfDigits =0;
+
+        digitsNOperatorsLists = new DigitsNOperatorsLists();
+        mathematicOperations = new MathematicOperations();
+
         result=0;
         isOperator = true;
+        comaFlag=false;
 
         button0 = (Button) findViewById(R.id.button0);
         button1 = (Button) findViewById(R.id.button1);
@@ -70,9 +71,12 @@ public class Main extends AppCompatActivity {
             public void onClick(View v) {
                 vibrate();
                 resultBar.setText(resultBar.getText() + "1");
-                numberList.add(1.0);
-                numberOfDigits++;
-                if(!isOperator){connectDigits();}
+                digitsNOperatorsLists.addNumberList(1.0);
+                digitsNOperatorsLists.incrementNumberOfDigits();
+                if(!isOperator){
+                    mathematicOperations.connectDigits(digitsNOperatorsLists.numberList, digitsNOperatorsLists.numberOfDigits,comaFlag);
+                    digitsNOperatorsLists.decrementNumberOfDigits();
+                }
                 isOperator=false;
             }
         });
@@ -82,9 +86,12 @@ public class Main extends AppCompatActivity {
             public void onClick(View v) {
                 vibrate();
                 resultBar.setText(resultBar.getText() + "2");
-                numberList.add(2.0);
-                numberOfDigits++;
-                if(!isOperator){connectDigits();}
+                digitsNOperatorsLists.addNumberList(2.0);
+                digitsNOperatorsLists.incrementNumberOfDigits();
+                if(!isOperator){
+                    mathematicOperations.connectDigits(digitsNOperatorsLists.numberList, digitsNOperatorsLists.numberOfDigits,comaFlag);
+                    digitsNOperatorsLists.decrementNumberOfDigits();
+                }
                 isOperator=false;
             }
         });
@@ -94,9 +101,12 @@ public class Main extends AppCompatActivity {
             public void onClick(View v) {
                 vibrate();
                 resultBar.setText(resultBar.getText() + "3");
-                numberList.add(3.0);
-                numberOfDigits++;
-                if(!isOperator){connectDigits();}
+                digitsNOperatorsLists.addNumberList(3.0);
+                digitsNOperatorsLists.incrementNumberOfDigits();
+                if(!isOperator){
+                    mathematicOperations.connectDigits(digitsNOperatorsLists.numberList, digitsNOperatorsLists.numberOfDigits,comaFlag);
+                    digitsNOperatorsLists.decrementNumberOfDigits();
+                }
                 isOperator=false;
             }
         });
@@ -106,9 +116,12 @@ public class Main extends AppCompatActivity {
             public void onClick(View v) {
                 vibrate();
                 resultBar.setText(resultBar.getText() + "4");
-                numberList.add(4.0);
-                numberOfDigits++;
-                if(!isOperator){connectDigits();}
+                digitsNOperatorsLists.addNumberList(4.0);
+                digitsNOperatorsLists.incrementNumberOfDigits();
+                if(!isOperator){
+                    mathematicOperations.connectDigits(digitsNOperatorsLists.numberList, digitsNOperatorsLists.numberOfDigits,comaFlag);
+                    digitsNOperatorsLists.decrementNumberOfDigits();
+                }
                 isOperator=false;
             }
         });
@@ -118,9 +131,12 @@ public class Main extends AppCompatActivity {
             public void onClick(View v) {
                 vibrate();
                 resultBar.setText(resultBar.getText() + "5");
-                numberList.add(5.0);
-                numberOfDigits++;
-                if(!isOperator){connectDigits();}
+                digitsNOperatorsLists.addNumberList(5.0);
+                digitsNOperatorsLists.incrementNumberOfDigits();
+                if(!isOperator){
+                    mathematicOperations.connectDigits(digitsNOperatorsLists.numberList, digitsNOperatorsLists.numberOfDigits,comaFlag);
+                    digitsNOperatorsLists.decrementNumberOfDigits();
+                }
                 isOperator=false;
             }
         });
@@ -130,9 +146,12 @@ public class Main extends AppCompatActivity {
             public void onClick(View v) {
                 vibrate();
                 resultBar.setText(resultBar.getText() + "6");
-                numberList.add(6.0);
-                numberOfDigits++;
-                if(!isOperator){connectDigits();}
+                digitsNOperatorsLists.addNumberList(6.0);
+                digitsNOperatorsLists.incrementNumberOfDigits();
+                if(!isOperator){
+                    mathematicOperations.connectDigits(digitsNOperatorsLists.numberList, digitsNOperatorsLists.numberOfDigits,comaFlag);
+                    digitsNOperatorsLists.decrementNumberOfDigits();
+                }
                 isOperator=false;
             }
         });
@@ -142,9 +161,12 @@ public class Main extends AppCompatActivity {
             public void onClick(View v) {
                 vibrate();
                 resultBar.setText(resultBar.getText() + "7");
-                numberList.add(7.0);
-                numberOfDigits++;
-                if(!isOperator){connectDigits();}
+                digitsNOperatorsLists.addNumberList(7.0);
+                digitsNOperatorsLists.incrementNumberOfDigits();
+                if(!isOperator){
+                    mathematicOperations.connectDigits(digitsNOperatorsLists.numberList, digitsNOperatorsLists.numberOfDigits,comaFlag);
+                    digitsNOperatorsLists.decrementNumberOfDigits();
+                }
                 isOperator=false;
             }
         });
@@ -154,9 +176,12 @@ public class Main extends AppCompatActivity {
             public void onClick(View v) {
                 vibrate();
                 resultBar.setText(resultBar.getText() + "8");
-                numberList.add(8.0);
-                numberOfDigits++;
-                if(!isOperator){connectDigits();}
+                digitsNOperatorsLists.addNumberList(8.0);
+                digitsNOperatorsLists.incrementNumberOfDigits();
+                if(!isOperator){
+                    mathematicOperations.connectDigits(digitsNOperatorsLists.numberList, digitsNOperatorsLists.numberOfDigits,comaFlag);
+                    digitsNOperatorsLists.decrementNumberOfDigits();
+                }
                 isOperator=false;
             }
         });
@@ -166,9 +191,12 @@ public class Main extends AppCompatActivity {
             public void onClick(View v) {
                 vibrate();
                 resultBar.setText(resultBar.getText() + "9");
-                numberList.add(9.0);
-                numberOfDigits++;
-                if(!isOperator){connectDigits();}
+                digitsNOperatorsLists.addNumberList(9.0);
+                digitsNOperatorsLists.incrementNumberOfDigits();
+                if(!isOperator){
+                    mathematicOperations.connectDigits(digitsNOperatorsLists.numberList, digitsNOperatorsLists.numberOfDigits,comaFlag);
+                    digitsNOperatorsLists.decrementNumberOfDigits();
+                }
                 isOperator=false;
             }
         });
@@ -178,9 +206,12 @@ public class Main extends AppCompatActivity {
             public void onClick(View v) {
                 vibrate();
                 resultBar.setText(resultBar.getText() + "0");
-                numberList.add(0.0);
-                numberOfDigits++;
-                if(!isOperator){connectDigits();}
+                digitsNOperatorsLists.addNumberList(0.0);
+                digitsNOperatorsLists.incrementNumberOfDigits();
+                if(!isOperator){
+                    mathematicOperations.connectDigits(digitsNOperatorsLists.numberList, digitsNOperatorsLists.numberOfDigits,comaFlag);
+                    digitsNOperatorsLists.decrementNumberOfDigits();
+                }
                 isOperator=false;
             }
         });
@@ -196,7 +227,7 @@ public class Main extends AppCompatActivity {
 //                    mValueOne = Float.parseFloat(resultBar.getText() + "");
                     mAddition = true;
                     resultBar.setText(resultBar.getText() +"+");
-                    operatorList.add("+");
+                    digitsNOperatorsLists.addOperatorList("+");
                     isOperator=true;
                 }
             }
@@ -209,7 +240,7 @@ public class Main extends AppCompatActivity {
 //                mValueOne = Float.parseFloat(resultBar.getText() + "");
                 mSubtract = true;
                 resultBar.setText(resultBar.getText() +"-");
-                operatorList.add("-");
+                digitsNOperatorsLists.addOperatorList("-");
                 isOperator=true;
             }
         });
@@ -221,7 +252,7 @@ public class Main extends AppCompatActivity {
 //                mValueOne = Float.parseFloat(resultBar.getText() + "");
                 mMultiplication = true;
                 resultBar.setText(resultBar.getText() +"*");
-                operatorList.add("*");
+                digitsNOperatorsLists.addOperatorList("*");
                 isOperator=true;
             }
         });
@@ -233,7 +264,7 @@ public class Main extends AppCompatActivity {
 //                mValueOne = Float.parseFloat(resultBar.getText() + "");
                 mDivision = true;
                 resultBar.setText(resultBar.getText() +"/");
-                operatorList.add("/");
+                digitsNOperatorsLists.addOperatorList("/");
                 isOperator=true;
             }
         });
@@ -241,16 +272,17 @@ public class Main extends AppCompatActivity {
         buttonEqual.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                System.out.println(numberList);
-                System.out.println(operatorList);
-                System.out.println(numberOfDigits);
                 vibrate();
-                result = calculations(operatorList, numberList);
-                resultBar.setText(Double.toString(result));
-                operatorList.clear();
-                numberList.clear();
-                isOperator=true;
-                numberOfDigits=0;
+                if(digitsNOperatorsLists.operatorList.size()>=digitsNOperatorsLists.numberList.size()){
+                    Toast.makeText(getApplicationContext(),"Wrong format!", Toast.LENGTH_SHORT).show();
+                }else {
+                    result = mathematicOperations.calculations(digitsNOperatorsLists.operatorList, digitsNOperatorsLists.numberList);
+                    resultBar.setText(Double.toString(result));
+                    digitsNOperatorsLists.clearOperatorList();
+                    digitsNOperatorsLists.clearNumberList();
+                    isOperator = true;
+                    digitsNOperatorsLists.resetNumberOfDigits();
+                }
             }
         });
         buttonC.setOnClickListener(new View.OnClickListener() {
@@ -258,93 +290,52 @@ public class Main extends AppCompatActivity {
             public void onClick(View v) {
                 vibrate();
                 resultBar.setText(null);
-                operatorList.clear();
-                numberList.clear();
+                digitsNOperatorsLists.clearOperatorList();
+                digitsNOperatorsLists.clearNumberList();
                 isOperator=true;
-                numberOfDigits=0;
+                digitsNOperatorsLists.resetNumberOfDigits();
             }
         });
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(numberOfDigits!=0) {
+                if(digitsNOperatorsLists.numberOfDigits!=0) {
                     vibrate();
                     resultBar.setText(null);
-                    numberList.remove(numberList.size() - 1);
+                    digitsNOperatorsLists.removeLastNumberListElement();
                     isOperator = true;
-                    numberOfDigits--;
+                    digitsNOperatorsLists.decrementNumberOfDigits();
                 }
             }
         });
-    }
-
-
-    double calculations(List<String> operatorList, List<Double> numberList){
-        //TODO return result in list after push equalButton
-        int listIterator = 0;
-        listIterator = operatorList.size();
-        double Result=0;
-
-        while(listIterator!=0){
-            for(int i=0;i<operatorList.size();i++){
-                if(operatorList.get(i).equals("*")){
-                    numberList.set(i,(numberList.get(i) * numberList.get(i+1)));
-                    numberList.set(i+1,numberList.get(i));
-                    operatorList.set(i,null);
-                    listIterator--;
-                    Result = numberList.get(i);
-                }else if (operatorList.get(i).equals("/")){
-                    numberList.set(i,(numberList.get(i) / numberList.get(i+1)));
-                    numberList.set(i+1,numberList.get(i));
-                    operatorList.set(i,null);
-                    listIterator--;
-                    Result = numberList.get(i);
-                }
+        buttonComa.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                vibrate();
+                resultBar.setText(resultBar.getText()+",");
+                isOperator=false;
+                comaFlag=true;
             }
-
-            if(listIterator==0){
-                Result*=10000000;
-                Result = Math.round(Result);
-                Result/=10000000;
-                return Result;
+        });
+        buttonBrackets.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                vibrate();
+                Toast.makeText(getApplicationContext(),"work in progres...", Toast.LENGTH_SHORT).show();
             }
-
-            for(int i=0;i<operatorList.size();i++){
-                if(compare("+",operatorList.get(i))){
-                    numberList.set(i,(numberList.get(i) + numberList.get(i+1)));
-                    numberList.set(i+1,numberList.get(i));
-                    operatorList.set(i,null);
-                    listIterator--;
-                    Result = numberList.get(i);
-                }else if (compare("-",operatorList.get(i))){
-                    numberList.set(i,(numberList.get(i) - numberList.get(i+1)));
-                    numberList.set(i+1,numberList.get(i));
-                    operatorList.set(i,null);
-                    listIterator--;
-                    Result = numberList.get(i);
-                }
+        });
+        buttonModulo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                vibrate();
+                Toast.makeText(getApplicationContext(),"work in progres...", Toast.LENGTH_SHORT).show();
             }
-        }
-
-        Result*=10000000;
-        Result = Math.round(Result);
-        Result/=10000000;
-        return Result;
+        });
     }
 
     void vibrate(){
         Vibrator vb = (Vibrator) getApplicationContext().getSystemService(Context.VIBRATOR_SERVICE);
         vb.vibrate(5);
-    }
-
-    void connectDigits(){
-        int tmp=0;
-        System.out.println(numberList);
-        tmp = (numberList.get(numberOfDigits-2).intValue());
-        System.out.println(tmp);
-        numberList.set(numberOfDigits-2, (Double.parseDouble(Integer.toString(tmp)+ numberList.get(numberOfDigits-1).toString())));
-        numberList.remove(numberOfDigits-1);
-        numberOfDigits--;
     }
 
 

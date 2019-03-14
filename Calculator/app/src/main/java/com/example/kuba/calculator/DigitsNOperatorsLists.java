@@ -6,12 +6,12 @@ import java.util.List;
 public class DigitsNOperatorsLists {
     List<Double> numberList;
     List<String> operatorList;
+    int numberOfDigits;
 
     public DigitsNOperatorsLists() {
         this.numberList = new ArrayList();
         this.operatorList = new ArrayList<>();
-//        this.numberList = numberList;
-//        this.operatorList = operatorList;
+        this.numberOfDigits = 0;
     }
 
     public Double getNumberList(int i) {
@@ -45,4 +45,8 @@ public class DigitsNOperatorsLists {
     public void clearOperatorList () {
         operatorList.clear();
     }
+
+    public void incrementNumberOfDigits(){ numberOfDigits++; }
+    public void decrementNumberOfDigits(){numberOfDigits--;}
+    public void resetNumberOfDigits(){numberOfDigits=0;};
 }
