@@ -14,22 +14,6 @@ public class DigitsNOperatorsLists {
         this.numberOfDigits = 0;
     }
 
-    public Double getNumberList(int i) {
-        return numberList.get(i);
-    }
-
-    public void addNumberList(Double number) {
-        numberList.add(number);
-    }
-
-    public void removeLastNumberListElement () {
-        numberList.remove(numberList.size()-1);
-    }
-
-    public void clearNumberList () {
-        numberList.clear();
-    }
-
     public String getOperatorList(int i) {
         return operatorList.get(i);
     }

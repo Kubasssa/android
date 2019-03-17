@@ -26,7 +26,7 @@ public class Main extends AppCompatActivity {
     ImageButton deleteButton;
     EditText resultBar ;
 
-    double result;
+    String result;
     boolean mAddition , mSubtract ,mMultiplication ,mDivision, isOperator, comaFlag ;
     DigitsNOperatorsLists digitsNOperatorsLists;
     MathematicOperations mathematicOperations;
@@ -39,7 +39,7 @@ public class Main extends AppCompatActivity {
         digitsNOperatorsLists = new DigitsNOperatorsLists();
         mathematicOperations = new MathematicOperations();
 
-        result=0;
+        result="";
         isOperator = true;
         comaFlag=false;
 
@@ -71,13 +71,8 @@ public class Main extends AppCompatActivity {
             public void onClick(View v) {
                 vibrate();
                 resultBar.setText(resultBar.getText() + "1");
-                digitsNOperatorsLists.addNumberList(1.0);
+                digitsNOperatorsLists.addOperatorList("1");
                 digitsNOperatorsLists.incrementNumberOfDigits();
-                if(!isOperator){
-                    mathematicOperations.connectDigits(digitsNOperatorsLists.numberList, digitsNOperatorsLists.numberOfDigits,comaFlag);
-                    digitsNOperatorsLists.decrementNumberOfDigits();
-                }
-                isOperator=false;
             }
         });
 
@@ -86,13 +81,8 @@ public class Main extends AppCompatActivity {
             public void onClick(View v) {
                 vibrate();
                 resultBar.setText(resultBar.getText() + "2");
-                digitsNOperatorsLists.addNumberList(2.0);
+                digitsNOperatorsLists.addOperatorList("2");
                 digitsNOperatorsLists.incrementNumberOfDigits();
-                if(!isOperator){
-                    mathematicOperations.connectDigits(digitsNOperatorsLists.numberList, digitsNOperatorsLists.numberOfDigits,comaFlag);
-                    digitsNOperatorsLists.decrementNumberOfDigits();
-                }
-                isOperator=false;
             }
         });
 
@@ -101,13 +91,8 @@ public class Main extends AppCompatActivity {
             public void onClick(View v) {
                 vibrate();
                 resultBar.setText(resultBar.getText() + "3");
-                digitsNOperatorsLists.addNumberList(3.0);
+                digitsNOperatorsLists.addOperatorList("3");
                 digitsNOperatorsLists.incrementNumberOfDigits();
-                if(!isOperator){
-                    mathematicOperations.connectDigits(digitsNOperatorsLists.numberList, digitsNOperatorsLists.numberOfDigits,comaFlag);
-                    digitsNOperatorsLists.decrementNumberOfDigits();
-                }
-                isOperator=false;
             }
         });
 
@@ -116,13 +101,9 @@ public class Main extends AppCompatActivity {
             public void onClick(View v) {
                 vibrate();
                 resultBar.setText(resultBar.getText() + "4");
-                digitsNOperatorsLists.addNumberList(4.0);
+                digitsNOperatorsLists.addOperatorList("4");
                 digitsNOperatorsLists.incrementNumberOfDigits();
-                if(!isOperator){
-                    mathematicOperations.connectDigits(digitsNOperatorsLists.numberList, digitsNOperatorsLists.numberOfDigits,comaFlag);
-                    digitsNOperatorsLists.decrementNumberOfDigits();
-                }
-                isOperator=false;
+
             }
         });
 
@@ -131,13 +112,8 @@ public class Main extends AppCompatActivity {
             public void onClick(View v) {
                 vibrate();
                 resultBar.setText(resultBar.getText() + "5");
-                digitsNOperatorsLists.addNumberList(5.0);
+                digitsNOperatorsLists.addOperatorList("5");
                 digitsNOperatorsLists.incrementNumberOfDigits();
-                if(!isOperator){
-                    mathematicOperations.connectDigits(digitsNOperatorsLists.numberList, digitsNOperatorsLists.numberOfDigits,comaFlag);
-                    digitsNOperatorsLists.decrementNumberOfDigits();
-                }
-                isOperator=false;
             }
         });
 
@@ -146,13 +122,8 @@ public class Main extends AppCompatActivity {
             public void onClick(View v) {
                 vibrate();
                 resultBar.setText(resultBar.getText() + "6");
-                digitsNOperatorsLists.addNumberList(6.0);
+                digitsNOperatorsLists.addOperatorList("6");
                 digitsNOperatorsLists.incrementNumberOfDigits();
-                if(!isOperator){
-                    mathematicOperations.connectDigits(digitsNOperatorsLists.numberList, digitsNOperatorsLists.numberOfDigits,comaFlag);
-                    digitsNOperatorsLists.decrementNumberOfDigits();
-                }
-                isOperator=false;
             }
         });
 
@@ -161,13 +132,8 @@ public class Main extends AppCompatActivity {
             public void onClick(View v) {
                 vibrate();
                 resultBar.setText(resultBar.getText() + "7");
-                digitsNOperatorsLists.addNumberList(7.0);
+                digitsNOperatorsLists.addOperatorList("7");
                 digitsNOperatorsLists.incrementNumberOfDigits();
-                if(!isOperator){
-                    mathematicOperations.connectDigits(digitsNOperatorsLists.numberList, digitsNOperatorsLists.numberOfDigits,comaFlag);
-                    digitsNOperatorsLists.decrementNumberOfDigits();
-                }
-                isOperator=false;
             }
         });
 
@@ -176,13 +142,8 @@ public class Main extends AppCompatActivity {
             public void onClick(View v) {
                 vibrate();
                 resultBar.setText(resultBar.getText() + "8");
-                digitsNOperatorsLists.addNumberList(8.0);
+                digitsNOperatorsLists.addOperatorList("8");
                 digitsNOperatorsLists.incrementNumberOfDigits();
-                if(!isOperator){
-                    mathematicOperations.connectDigits(digitsNOperatorsLists.numberList, digitsNOperatorsLists.numberOfDigits,comaFlag);
-                    digitsNOperatorsLists.decrementNumberOfDigits();
-                }
-                isOperator=false;
             }
         });
 
@@ -191,13 +152,8 @@ public class Main extends AppCompatActivity {
             public void onClick(View v) {
                 vibrate();
                 resultBar.setText(resultBar.getText() + "9");
-                digitsNOperatorsLists.addNumberList(9.0);
+                digitsNOperatorsLists.addOperatorList("9");
                 digitsNOperatorsLists.incrementNumberOfDigits();
-                if(!isOperator){
-                    mathematicOperations.connectDigits(digitsNOperatorsLists.numberList, digitsNOperatorsLists.numberOfDigits,comaFlag);
-                    digitsNOperatorsLists.decrementNumberOfDigits();
-                }
-                isOperator=false;
             }
         });
 
@@ -205,14 +161,14 @@ public class Main extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 vibrate();
-                resultBar.setText(resultBar.getText() + "0");
-                digitsNOperatorsLists.addNumberList(0.0);
-                digitsNOperatorsLists.incrementNumberOfDigits();
-                if(!isOperator){
-                    mathematicOperations.connectDigits(digitsNOperatorsLists.numberList, digitsNOperatorsLists.numberOfDigits,comaFlag);
-                    digitsNOperatorsLists.decrementNumberOfDigits();
+                //TODO equals nie działa
+                if(resultBar.getText().equals("0")){
+                    System.out.println("chuj");
+                }else {
+                    resultBar.setText(resultBar.getText() + "0");
+                    digitsNOperatorsLists.addOperatorList("0");
+                    digitsNOperatorsLists.incrementNumberOfDigits();
                 }
-                isOperator=false;
             }
         });
 
@@ -224,11 +180,8 @@ public class Main extends AppCompatActivity {
                     resultBar.setText("");
                 } else {
                     vibrate();
-//                    mValueOne = Float.parseFloat(resultBar.getText() + "");
-                    mAddition = true;
                     resultBar.setText(resultBar.getText() +"+");
                     digitsNOperatorsLists.addOperatorList("+");
-                    isOperator=true;
                 }
             }
         });
@@ -237,11 +190,8 @@ public class Main extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 vibrate();
-//                mValueOne = Float.parseFloat(resultBar.getText() + "");
-                mSubtract = true;
                 resultBar.setText(resultBar.getText() +"-");
                 digitsNOperatorsLists.addOperatorList("-");
-                isOperator=true;
             }
         });
 
@@ -249,11 +199,8 @@ public class Main extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 vibrate();
-//                mValueOne = Float.parseFloat(resultBar.getText() + "");
-                mMultiplication = true;
                 resultBar.setText(resultBar.getText() +"*");
                 digitsNOperatorsLists.addOperatorList("*");
-                isOperator=true;
             }
         });
 
@@ -261,11 +208,8 @@ public class Main extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 vibrate();
-//                mValueOne = Float.parseFloat(resultBar.getText() + "");
-                mDivision = true;
                 resultBar.setText(resultBar.getText() +"/");
                 digitsNOperatorsLists.addOperatorList("/");
-                isOperator=true;
             }
         });
 
@@ -273,15 +217,12 @@ public class Main extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 vibrate();
-                if(digitsNOperatorsLists.operatorList.size()>=digitsNOperatorsLists.numberList.size()){
+                if(mathematicOperations.operatorAtTheEndException(digitsNOperatorsLists.operatorList)){
                     Toast.makeText(getApplicationContext(),"Wrong format!", Toast.LENGTH_SHORT).show();
                 }else {
-                    result = mathematicOperations.calculations(digitsNOperatorsLists.operatorList, digitsNOperatorsLists.numberList);
-                    resultBar.setText(Double.toString(result));
-                    digitsNOperatorsLists.clearOperatorList();
-                    digitsNOperatorsLists.clearNumberList();
+                    result = mathematicOperations.calculation(digitsNOperatorsLists.operatorList);
+                    resultBar.setText(result);
                     isOperator = true;
-                    digitsNOperatorsLists.resetNumberOfDigits();
                 }
             }
         });
@@ -291,8 +232,6 @@ public class Main extends AppCompatActivity {
                 vibrate();
                 resultBar.setText(null);
                 digitsNOperatorsLists.clearOperatorList();
-                digitsNOperatorsLists.clearNumberList();
-                isOperator=true;
                 digitsNOperatorsLists.resetNumberOfDigits();
             }
         });
@@ -302,8 +241,6 @@ public class Main extends AppCompatActivity {
                 if(digitsNOperatorsLists.numberOfDigits!=0) {
                     vibrate();
                     resultBar.setText(null);
-                    digitsNOperatorsLists.removeLastNumberListElement();
-                    isOperator = true;
                     digitsNOperatorsLists.decrementNumberOfDigits();
                 }
             }
@@ -313,8 +250,8 @@ public class Main extends AppCompatActivity {
             public void onClick(View v) {
                 vibrate();
                 resultBar.setText(resultBar.getText()+",");
-                isOperator=false;
-                comaFlag=true;
+                digitsNOperatorsLists.addOperatorList(".");
+                digitsNOperatorsLists.incrementNumberOfDigits();
             }
         });
         buttonBrackets.setOnClickListener(new View.OnClickListener() {

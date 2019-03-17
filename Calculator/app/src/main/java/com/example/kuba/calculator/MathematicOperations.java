@@ -14,77 +14,87 @@ public class MathematicOperations {
 
     }
 
-    double calculations(List<String> operatorList, List<Double> numberList){
-        //TODO return result in list after push equalButton
-        int listIterator = 0;
-        listIterator = operatorList.size();
-        double Result=0;
-
-        while(listIterator!=0){
-            for(int i=0;i<operatorList.size();i++){
-                if(operatorList.get(i).equals("*")){
-                    numberList.set(i,(numberList.get(i) * numberList.get(i+1)));
-                    numberList.set(i+1,numberList.get(i));
-                    operatorList.set(i,null);
-                    listIterator--;
-                    Result = numberList.get(i);
-                }else if (operatorList.get(i).equals("/")){
-                    numberList.set(i,(numberList.get(i) / numberList.get(i+1)));
-                    numberList.set(i+1,numberList.get(i));
-                    operatorList.set(i,null);
-                    listIterator--;
-                    Result = numberList.get(i);
-                }
-            }
-
-            if(listIterator==0){
-                Result*=10000000;
-                Result = Math.round(Result);
-                Result/=10000000;
-                return Result;
-            }
-
-            for(int i=0;i<operatorList.size();i++){
-                if(compare("+",operatorList.get(i))){
-                    numberList.set(i,(numberList.get(i) + numberList.get(i+1)));
-                    numberList.set(i+1,numberList.get(i));
-                    operatorList.set(i,null);
-                    listIterator--;
-                    Result = numberList.get(i);
-                }else if (compare("-",operatorList.get(i))){
-                    numberList.set(i,(numberList.get(i) - numberList.get(i+1)));
-                    numberList.set(i+1,numberList.get(i));
-                    operatorList.set(i,null);
-                    listIterator--;
-                    Result = numberList.get(i);
-                }
-            }
+    String calculation(List<String> listOfNumbers){
+        connectDigits(listOfNumbers);
+        while(listOfNumbers.size()!=1){
+            listOfNumbers = subCalculation(listOfNumbers);
         }
 
-        Result*=10000000;
-        Result = Math.round(Result);
-        Result/=10000000;
-        return Result;
+        return listOfNumbers.get(0);
+
     }
 
-    void connectDigits(List<Double> numberList, int numberOfDigits, boolean comaFlag){
-        int tmp=0;
-        String comaTmp;
-
-        if(comaFlag){
-            tmp = (numberList.get(numberOfDigits-2).intValue());
-            comaTmp = Integer.toString(tmp)+ ".";
-            numberList.set(numberOfDigits-2, (Double.parseDouble(comaTmp + numberList.get(numberOfDigits-1).toString())));
-            numberList.remove(numberOfDigits-1);
-        }else {
-            tmp = (numberList.get(numberOfDigits - 2).intValue());
-            numberList.set(numberOfDigits - 2, (Double.parseDouble(Integer.toString(tmp) + numberList.get(numberOfDigits - 1).toString())));
-            numberList.remove(numberOfDigits - 1);
+    List<String> subCalculation(List<String> listOfNumbers){
+        for(int i=0;i<listOfNumbers.size();i++){
+            if(listOfNumbers.get(i).equals("*")||listOfNumbers.get(i).equals("/")||listOfNumbers.get(i).equals("+")||listOfNumbers.get(i).equals("-")) {
+                listOfNumbers = operatorFunction(listOfNumbers, i, listOfNumbers.get(i));
+            }
         }
-        //TODO coma things...;
+        return listOfNumbers;
     }
 
-    void removeLastDigit(List<String> operatorList, List<Double> numberList, int numberOfDigits){
 
+    List<String> operatorFunction (List<String> listOfNumbers, int i, String operationMark) {
+        double tmp=0;
+        switch (operationMark){
+            case "*":
+                tmp = Double.parseDouble(listOfNumbers.get(i - 1)) * Double.parseDouble(listOfNumbers.get(i + 1));
+                break;
+            case "/":
+                tmp = Double.parseDouble(listOfNumbers.get(i - 1)) / Double.parseDouble(listOfNumbers.get(i + 1));
+                break;
+            case "+":
+                tmp = Double.parseDouble(listOfNumbers.get(i - 1)) + Double.parseDouble(listOfNumbers.get(i + 1));
+                break;
+            case "-":
+                tmp = Double.parseDouble(listOfNumbers.get(i - 1)) - Double.parseDouble(listOfNumbers.get(i + 1));
+                break;
+        }
+
+        listOfNumbers.set(i - 1, Double.toString(tmp));
+        listOfNumbers.remove(i + 1);
+        listOfNumbers.remove(i);
+
+        return listOfNumbers;
+    }
+
+
+    List<String> connectDigits(List<String> listOfNumbers){
+        String tmpDigit="";
+        int firstNumberIterator =0;
+        for (int i=0;i<listOfNumbers.size();i++){
+            if(listOfNumbers.get(i).matches("0|1|2|3|4|5|6|7|8|9")||listOfNumbers.get(i).equals(".")){
+
+                tmpDigit += listOfNumbers.get(i);
+
+                if(tmpDigit.length()>1){
+                    listOfNumbers.remove(i);
+                    listOfNumbers.set(firstNumberIterator,tmpDigit);
+                    i--;
+                }else{firstNumberIterator = i;}
+            }else{tmpDigit="";firstNumberIterator = 0;}
+        }
+        return listOfNumbers;
+    }
+
+
+    boolean operatorAtTheEndException(List<String> listOfNumbers){
+        int lastElement = listOfNumbers.size()-1;
+        boolean x = false;
+        if(listOfNumbers.get(lastElement).equals("+")||listOfNumbers.get(lastElement).equals("-")||listOfNumbers.get(lastElement).equals("*")||listOfNumbers.get(lastElement).equals("/")){
+            x=true;
+        }
+        return x;
+    }
+
+    boolean moreThanOneOperatorException(List<String> listOfNumbers){
+        int lastElement = listOfNumbers.size()-1;
+        boolean x = false;
+        String tmp="";
+        if(listOfNumbers.get(lastElement).equals("+")||listOfNumbers.get(lastElement).equals("-")||listOfNumbers.get(lastElement).equals("*")||listOfNumbers.get(lastElement).equals("/")){
+            tmp = listOfNumbers.get(lastElement);
+            x=true;
+        }
+        return x;
     }
 }
