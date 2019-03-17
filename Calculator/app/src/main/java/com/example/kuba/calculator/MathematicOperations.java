@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Vibrator;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static android.telephony.PhoneNumberUtils.compare;
@@ -87,14 +88,27 @@ public class MathematicOperations {
         return x;
     }
 
-    boolean moreThanOneOperatorException(List<String> listOfNumbers){
+    void moreThanOneOperatorException(List<String> listOfNumbers){
         int lastElement = listOfNumbers.size()-1;
-        boolean x = false;
-        String tmp="";
-        if(listOfNumbers.get(lastElement).equals("+")||listOfNumbers.get(lastElement).equals("-")||listOfNumbers.get(lastElement).equals("*")||listOfNumbers.get(lastElement).equals("/")){
-            tmp = listOfNumbers.get(lastElement);
-            x=true;
+        int secondLastElement = listOfNumbers.size()-2;
+        List<String> tmpList = new ArrayList<>();
+        tmpList.add("+");
+        tmpList.add("-");
+        tmpList.add("*");
+        tmpList.add("/");
+
+        if(tmpList.contains(listOfNumbers.get(lastElement))&&tmpList.contains(listOfNumbers.get(secondLastElement))){
+            listOfNumbers.set(secondLastElement,listOfNumbers.get(lastElement));
+            listOfNumbers.remove(lastElement);
         }
-        return x;
+    }
+
+    void negativNuber(List<String> listOfNumbers){
+        connectDigits(listOfNumbers);
+        double tmp = Double.parseDouble(listOfNumbers.get(listOfNumbers.size()-1));
+        tmp = tmp*(-1);
+        listOfNumbers.set(listOfNumbers.size()-1,Double.toString(tmp));
     }
 }
+
+//TODO dodanie mnnusa prezed liczbą oraz zmiana jednego operatora na drugi (wszystko na wyświetlaczu)

@@ -22,12 +22,12 @@ public class Main extends AppCompatActivity {
 
     Button button0 , button1 , button2 , button3 , button4 , button5 , button6 ,
             button7 , button8 , button9 , buttonAdd , buttonSub , buttonDivision ,
-            buttonMul , buttonBrackets , buttonModulo,  buttonC , buttonComa ,  buttonEqual;
+            buttonMul , buttonBrackets , buttonModulo,  buttonC , buttonComa ,  buttonEqual, buttonPM;
     ImageButton deleteButton;
     EditText resultBar ;
 
     String result;
-    boolean mAddition , mSubtract ,mMultiplication ,mDivision, isOperator, comaFlag ;
+    boolean zeroFlag;
     DigitsNOperatorsLists digitsNOperatorsLists;
     MathematicOperations mathematicOperations;
 
@@ -39,9 +39,8 @@ public class Main extends AppCompatActivity {
         digitsNOperatorsLists = new DigitsNOperatorsLists();
         mathematicOperations = new MathematicOperations();
 
+        zeroFlag=true;
         result="";
-        isOperator = true;
-        comaFlag=false;
 
         button0 = (Button) findViewById(R.id.button0);
         button1 = (Button) findViewById(R.id.button1);
@@ -64,6 +63,7 @@ public class Main extends AppCompatActivity {
         buttonModulo = (Button) findViewById(R.id.buttonModulo);
         resultBar = (EditText) findViewById(R.id.resultBar);
         deleteButton = (ImageButton) findViewById(R.id.deleteButton);
+        buttonPM = (Button) findViewById(R.id.buttonPM);
 
 
         button1.setOnClickListener(new View.OnClickListener() {
@@ -161,9 +161,8 @@ public class Main extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 vibrate();
-                //TODO equals nie działa
-                if(resultBar.getText().equals("0")){
-                    System.out.println("chuj");
+                if(resultBar.getText().toString().equals("0")){
+                    System.out.println("multiZero");
                 }else {
                     resultBar.setText(resultBar.getText() + "0");
                     digitsNOperatorsLists.addOperatorList("0");
@@ -183,6 +182,7 @@ public class Main extends AppCompatActivity {
                     resultBar.setText(resultBar.getText() +"+");
                     digitsNOperatorsLists.addOperatorList("+");
                 }
+                mathematicOperations.moreThanOneOperatorException(digitsNOperatorsLists.operatorList);
             }
         });
 
@@ -192,6 +192,7 @@ public class Main extends AppCompatActivity {
                 vibrate();
                 resultBar.setText(resultBar.getText() +"-");
                 digitsNOperatorsLists.addOperatorList("-");
+                mathematicOperations.moreThanOneOperatorException(digitsNOperatorsLists.operatorList);
             }
         });
 
@@ -201,6 +202,7 @@ public class Main extends AppCompatActivity {
                 vibrate();
                 resultBar.setText(resultBar.getText() +"*");
                 digitsNOperatorsLists.addOperatorList("*");
+                mathematicOperations.moreThanOneOperatorException(digitsNOperatorsLists.operatorList);
             }
         });
 
@@ -210,6 +212,7 @@ public class Main extends AppCompatActivity {
                 vibrate();
                 resultBar.setText(resultBar.getText() +"/");
                 digitsNOperatorsLists.addOperatorList("/");
+                mathematicOperations.moreThanOneOperatorException(digitsNOperatorsLists.operatorList);
             }
         });
 
@@ -217,12 +220,12 @@ public class Main extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 vibrate();
+                System.out.println(digitsNOperatorsLists.operatorList);
                 if(mathematicOperations.operatorAtTheEndException(digitsNOperatorsLists.operatorList)){
                     Toast.makeText(getApplicationContext(),"Wrong format!", Toast.LENGTH_SHORT).show();
                 }else {
                     result = mathematicOperations.calculation(digitsNOperatorsLists.operatorList);
                     resultBar.setText(result);
-                    isOperator = true;
                 }
             }
         });
@@ -254,6 +257,15 @@ public class Main extends AppCompatActivity {
                 digitsNOperatorsLists.incrementNumberOfDigits();
             }
         });
+        buttonPM.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                vibrate();
+                mathematicOperations.negativNuber(digitsNOperatorsLists.operatorList);
+                //TODO wyświetlanie minusa przy liczbie na ekranie
+            }
+        });
+
         buttonBrackets.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
