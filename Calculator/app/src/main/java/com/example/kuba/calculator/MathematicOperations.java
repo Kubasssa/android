@@ -103,6 +103,14 @@ public class MathematicOperations {
         }
     }
 
+    boolean operatorAtStart(List<String> listOfNumbers){
+        boolean tmp = false;
+        if(listOfNumbers.isEmpty()){
+            tmp = true;
+        }
+        return tmp;
+    }
+
     void negativNuber(List<String> listOfNumbers){
         connectDigits(listOfNumbers);
         double tmp = Double.parseDouble(listOfNumbers.get(listOfNumbers.size()-1));

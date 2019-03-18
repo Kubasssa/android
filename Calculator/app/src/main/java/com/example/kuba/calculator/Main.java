@@ -69,40 +69,28 @@ public class Main extends AppCompatActivity {
         button1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                vibrate();
-                resultBar.setText(resultBar.getText() + "1");
-                digitsNOperatorsLists.addOperatorList("1");
-                digitsNOperatorsLists.incrementNumberOfDigits();
+                addToList("1");
             }
         });
 
         button2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                vibrate();
-                resultBar.setText(resultBar.getText() + "2");
-                digitsNOperatorsLists.addOperatorList("2");
-                digitsNOperatorsLists.incrementNumberOfDigits();
+                addToList("2");
             }
         });
 
         button3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                vibrate();
-                resultBar.setText(resultBar.getText() + "3");
-                digitsNOperatorsLists.addOperatorList("3");
-                digitsNOperatorsLists.incrementNumberOfDigits();
+                addToList("3");
             }
         });
 
         button4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                vibrate();
-                resultBar.setText(resultBar.getText() + "4");
-                digitsNOperatorsLists.addOperatorList("4");
-                digitsNOperatorsLists.incrementNumberOfDigits();
+                addToList("4");
 
             }
         });
@@ -110,50 +98,35 @@ public class Main extends AppCompatActivity {
         button5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                vibrate();
-                resultBar.setText(resultBar.getText() + "5");
-                digitsNOperatorsLists.addOperatorList("5");
-                digitsNOperatorsLists.incrementNumberOfDigits();
+                addToList("5");
             }
         });
 
         button6.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                vibrate();
-                resultBar.setText(resultBar.getText() + "6");
-                digitsNOperatorsLists.addOperatorList("6");
-                digitsNOperatorsLists.incrementNumberOfDigits();
+                addToList("6");
             }
         });
 
         button7.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                vibrate();
-                resultBar.setText(resultBar.getText() + "7");
-                digitsNOperatorsLists.addOperatorList("7");
-                digitsNOperatorsLists.incrementNumberOfDigits();
+                addToList("7");
             }
         });
 
         button8.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                vibrate();
-                resultBar.setText(resultBar.getText() + "8");
-                digitsNOperatorsLists.addOperatorList("8");
-                digitsNOperatorsLists.incrementNumberOfDigits();
+                addToList("8");
             }
         });
 
         button9.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                vibrate();
-                resultBar.setText(resultBar.getText() + "9");
-                digitsNOperatorsLists.addOperatorList("9");
-                digitsNOperatorsLists.incrementNumberOfDigits();
+                addToList("9");
             }
         });
 
@@ -174,15 +147,14 @@ public class Main extends AppCompatActivity {
         buttonAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                if (resultBar == null) {
-                    resultBar.setText("");
+                vibrate();
+                if (mathematicOperations.operatorAtStart(digitsNOperatorsLists.operatorList)) {
+                    Toast.makeText(getApplicationContext(),"Wrong format!", Toast.LENGTH_SHORT).show();
                 } else {
-                    vibrate();
-                    resultBar.setText(resultBar.getText() +"+");
+                    resultBar.setText(resultBar.getText() + "+");
                     digitsNOperatorsLists.addOperatorList("+");
+                    mathematicOperations.moreThanOneOperatorException(digitsNOperatorsLists.operatorList);
                 }
-                mathematicOperations.moreThanOneOperatorException(digitsNOperatorsLists.operatorList);
             }
         });
 
@@ -190,9 +162,13 @@ public class Main extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 vibrate();
-                resultBar.setText(resultBar.getText() +"-");
-                digitsNOperatorsLists.addOperatorList("-");
-                mathematicOperations.moreThanOneOperatorException(digitsNOperatorsLists.operatorList);
+                if (mathematicOperations.operatorAtStart(digitsNOperatorsLists.operatorList)) {
+                    Toast.makeText(getApplicationContext(),"Wrong format!", Toast.LENGTH_SHORT).show();
+                } else {
+                    resultBar.setText(resultBar.getText() + "-");
+                    digitsNOperatorsLists.addOperatorList("-");
+                    mathematicOperations.moreThanOneOperatorException(digitsNOperatorsLists.operatorList);
+                }
             }
         });
 
@@ -200,9 +176,13 @@ public class Main extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 vibrate();
-                resultBar.setText(resultBar.getText() +"*");
-                digitsNOperatorsLists.addOperatorList("*");
-                mathematicOperations.moreThanOneOperatorException(digitsNOperatorsLists.operatorList);
+                if (mathematicOperations.operatorAtStart(digitsNOperatorsLists.operatorList)) {
+                    Toast.makeText(getApplicationContext(),"Wrong format!", Toast.LENGTH_SHORT).show();
+                } else {
+                    resultBar.setText(resultBar.getText() + "*");
+                    digitsNOperatorsLists.addOperatorList("*");
+                    mathematicOperations.moreThanOneOperatorException(digitsNOperatorsLists.operatorList);
+                }
             }
         });
 
@@ -210,9 +190,13 @@ public class Main extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 vibrate();
-                resultBar.setText(resultBar.getText() +"/");
-                digitsNOperatorsLists.addOperatorList("/");
-                mathematicOperations.moreThanOneOperatorException(digitsNOperatorsLists.operatorList);
+                if (mathematicOperations.operatorAtStart(digitsNOperatorsLists.operatorList)) {
+                    Toast.makeText(getApplicationContext(),"Wrong format!", Toast.LENGTH_SHORT).show();
+                } else {
+                    resultBar.setText(resultBar.getText() + "/");
+                    digitsNOperatorsLists.addOperatorList("/");
+                    mathematicOperations.moreThanOneOperatorException(digitsNOperatorsLists.operatorList);
+                }
             }
         });
 
@@ -251,10 +235,7 @@ public class Main extends AppCompatActivity {
         buttonComa.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                vibrate();
-                resultBar.setText(resultBar.getText()+",");
-                digitsNOperatorsLists.addOperatorList(".");
-                digitsNOperatorsLists.incrementNumberOfDigits();
+                addToList(".");
             }
         });
         buttonPM.setOnClickListener(new View.OnClickListener() {
@@ -262,6 +243,7 @@ public class Main extends AppCompatActivity {
             public void onClick(View v) {
                 vibrate();
                 mathematicOperations.negativNuber(digitsNOperatorsLists.operatorList);
+                changingMark();
                 //TODO wyświetlanie minusa przy liczbie na ekranie
             }
         });
@@ -281,6 +263,27 @@ public class Main extends AppCompatActivity {
             }
         });
     }
+
+    void addToList(String mark){
+        vibrate();
+        resultBar.setText(resultBar.getText() + mark);
+        digitsNOperatorsLists.addOperatorList(mark);
+        digitsNOperatorsLists.incrementNumberOfDigits();
+    }
+
+    void changingMark(){
+        String returnValue="";
+
+        mathematicOperations.connectDigits(digitsNOperatorsLists.operatorList);
+        for (int i =0;i<digitsNOperatorsLists.operatorList.size()-1;i++)
+        {
+            returnValue += digitsNOperatorsLists.operatorList.get(i);
+        }
+        String tmp = digitsNOperatorsLists.operatorList.get(digitsNOperatorsLists.operatorList.size()-1);
+        returnValue = returnValue + "(" + tmp +")";
+        resultBar.setText(returnValue);
+    }
+
 
     void vibrate(){
         Vibrator vb = (Vibrator) getApplicationContext().getSystemService(Context.VIBRATOR_SERVICE);
