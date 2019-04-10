@@ -4,45 +4,48 @@ import android.content.Context;
 import android.os.Vibrator;
 import android.widget.Toast;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 
 import static android.telephony.PhoneNumberUtils.compare;
 
 public class MathematicOperations {
-
-    public MathematicOperations() {
-
+    List<String> listOfNumbers;
+    public MathematicOperations(List<String> listOfNumbers) {
+       this.listOfNumbers = listOfNumbers;
     }
 
-    String calculation(List<String> listOfNumbers){
-        connectDigits(listOfNumbers);
+    String calculation(){
+        connectDigits();
         while(listOfNumbers.size()!=1){
-            listOfNumbers = subCalculation(listOfNumbers);
+            listOfNumbers = subCalculation();
         }
 
         return listOfNumbers.get(0);
 
     }
 
-    List<String> subCalculation(List<String> listOfNumbers){
+    List<String> subCalculation(){
         for(int i=0;i<listOfNumbers.size();i++){
             if(listOfNumbers.get(i).equals("*")||listOfNumbers.get(i).equals("/")||listOfNumbers.get(i).equals("+")||listOfNumbers.get(i).equals("-")) {
-                listOfNumbers = operatorFunction(listOfNumbers, i, listOfNumbers.get(i));
+                listOfNumbers = operatorFunction( i, listOfNumbers.get(i));
             }
         }
         return listOfNumbers;
     }
 
 
-    List<String> operatorFunction (List<String> listOfNumbers, int i, String operationMark) {
+    List<String> operatorFunction ( int i, String operationMark) {
         double tmp=0;
+
         switch (operationMark){
             case "*":
                 tmp = Double.parseDouble(listOfNumbers.get(i - 1)) * Double.parseDouble(listOfNumbers.get(i + 1));
                 break;
             case "/":
-                tmp = Double.parseDouble(listOfNumbers.get(i - 1)) / Double.parseDouble(listOfNumbers.get(i + 1));
+                    tmp = Double.parseDouble(listOfNumbers.get(i - 1)) / Double.parseDouble(listOfNumbers.get(i + 1));
                 break;
             case "+":
                 tmp = Double.parseDouble(listOfNumbers.get(i - 1)) + Double.parseDouble(listOfNumbers.get(i + 1));
@@ -60,7 +63,7 @@ public class MathematicOperations {
     }
 
 
-    List<String> connectDigits(List<String> listOfNumbers){
+    List<String> connectDigits(){
         String tmpDigit="";
         int firstNumberIterator =0;
         for (int i=0;i<listOfNumbers.size();i++){
@@ -79,7 +82,7 @@ public class MathematicOperations {
     }
 
 
-    boolean operatorAtTheEndException(List<String> listOfNumbers){
+    boolean operatorAtTheEndException(){
         int lastElement = listOfNumbers.size()-1;
         boolean x = false;
         if(listOfNumbers.get(lastElement).equals("+")||listOfNumbers.get(lastElement).equals("-")||listOfNumbers.get(lastElement).equals("*")||listOfNumbers.get(lastElement).equals("/")){
@@ -88,7 +91,7 @@ public class MathematicOperations {
         return x;
     }
 
-    void moreThanOneOperatorException(List<String> listOfNumbers){
+    void moreThanOneOperatorException(){
         int lastElement = listOfNumbers.size()-1;
         int secondLastElement = listOfNumbers.size()-2;
         List<String> tmpList = new ArrayList<>();
@@ -103,7 +106,7 @@ public class MathematicOperations {
         }
     }
 
-    boolean operatorAtStart(List<String> listOfNumbers){
+    boolean operatorAtStart(){
         boolean tmp = false;
         if(listOfNumbers.isEmpty()){
             tmp = true;
@@ -111,12 +114,26 @@ public class MathematicOperations {
         return tmp;
     }
 
-    void negativNuber(List<String> listOfNumbers){
-        connectDigits(listOfNumbers);
+    void negativNuber(){
+        connectDigits();
         double tmp = Double.parseDouble(listOfNumbers.get(listOfNumbers.size()-1));
         tmp = tmp*(-1);
         listOfNumbers.set(listOfNumbers.size()-1,Double.toString(tmp));
     }
-}
 
-//TODO dodanie mnnusa prezed liczbą oraz zmiana jednego operatora na drugi (wszystko na wyświetlaczu)
+    void removeOneElement(){
+        connectDigits();
+        listOfNumbers.remove(listOfNumbers.size()-1);
+    }
+
+    boolean checkIfDevideByZero(){
+        boolean result=false;
+        connectDigits();
+        for(int i=0;i<listOfNumbers.size();i++){
+            if(listOfNumbers.get(i).equals("/")&&listOfNumbers.get(i+1).equals("0")) {
+                result=true;
+            }
+        }
+        return result;
+    }
+}

@@ -1,6 +1,8 @@
 package com.example.kuba.calculator;
 
 import android.content.Context;
+import android.content.Intent;
+import android.media.Image;
 import android.os.Vibrator;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -18,18 +20,18 @@ import java.util.List;
 
 import static android.telephony.PhoneNumberUtils.compare;
 
-public class Main extends AppCompatActivity {
+public class BasicCalc extends AppCompatActivity {
 
     Button button0 , button1 , button2 , button3 , button4 , button5 , button6 ,
             button7 , button8 , button9 , buttonAdd , buttonSub , buttonDivision ,
             buttonMul , buttonBrackets , buttonModulo,  buttonC , buttonComa ,  buttonEqual, buttonPM;
-    ImageButton deleteButton;
+    ImageButton deleteButton, backButton;
     EditText resultBar ;
-
     String result;
-    boolean zeroFlag;
+    boolean zeroFlag, dotFlag;
     DigitsNOperatorsLists digitsNOperatorsLists;
     MathematicOperations mathematicOperations;
+    DisplaingNumberExceptions displaingNumberExceptions;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,9 +39,10 @@ public class Main extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         digitsNOperatorsLists = new DigitsNOperatorsLists();
-        mathematicOperations = new MathematicOperations();
-
+        mathematicOperations = new MathematicOperations(digitsNOperatorsLists.operatorList);
+        displaingNumberExceptions = new DisplaingNumberExceptions(digitsNOperatorsLists,mathematicOperations);
         zeroFlag=true;
+        dotFlag = true;
         result="";
 
         button0 = (Button) findViewById(R.id.button0);
@@ -64,33 +67,34 @@ public class Main extends AppCompatActivity {
         resultBar = (EditText) findViewById(R.id.resultBar);
         deleteButton = (ImageButton) findViewById(R.id.deleteButton);
         buttonPM = (Button) findViewById(R.id.buttonPM);
+        backButton = (ImageButton) findViewById(R.id.backButton);
 
 
         button1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addToList("1");
+                addDigitToList("1");
             }
         });
 
         button2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addToList("2");
+                addDigitToList("2");
             }
         });
 
         button3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addToList("3");
+                addDigitToList("3");
             }
         });
 
         button4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addToList("4");
+                addDigitToList("4");
 
             }
         });
@@ -98,35 +102,35 @@ public class Main extends AppCompatActivity {
         button5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addToList("5");
+                addDigitToList("5");
             }
         });
 
         button6.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addToList("6");
+                addDigitToList("6");
             }
         });
 
         button7.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addToList("7");
+                addDigitToList("7");
             }
         });
 
         button8.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addToList("8");
+                addDigitToList("8");
             }
         });
 
         button9.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addToList("9");
+                addDigitToList("9");
             }
         });
 
@@ -137,9 +141,7 @@ public class Main extends AppCompatActivity {
                 if(resultBar.getText().toString().equals("0")){
                     System.out.println("multiZero");
                 }else {
-                    resultBar.setText(resultBar.getText() + "0");
-                    digitsNOperatorsLists.addOperatorList("0");
-                    digitsNOperatorsLists.incrementNumberOfDigits();
+                    addDigitToList("0");
                 }
             }
         });
@@ -147,56 +149,28 @@ public class Main extends AppCompatActivity {
         buttonAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                vibrate();
-                if (mathematicOperations.operatorAtStart(digitsNOperatorsLists.operatorList)) {
-                    Toast.makeText(getApplicationContext(),"Wrong format!", Toast.LENGTH_SHORT).show();
-                } else {
-                    resultBar.setText(resultBar.getText() + "+");
-                    digitsNOperatorsLists.addOperatorList("+");
-                    mathematicOperations.moreThanOneOperatorException(digitsNOperatorsLists.operatorList);
-                }
+                addOperandToList("+");
             }
         });
 
         buttonSub.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                vibrate();
-                if (mathematicOperations.operatorAtStart(digitsNOperatorsLists.operatorList)) {
-                    Toast.makeText(getApplicationContext(),"Wrong format!", Toast.LENGTH_SHORT).show();
-                } else {
-                    resultBar.setText(resultBar.getText() + "-");
-                    digitsNOperatorsLists.addOperatorList("-");
-                    mathematicOperations.moreThanOneOperatorException(digitsNOperatorsLists.operatorList);
-                }
+                addOperandToList("-");
             }
         });
 
         buttonMul.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                vibrate();
-                if (mathematicOperations.operatorAtStart(digitsNOperatorsLists.operatorList)) {
-                    Toast.makeText(getApplicationContext(),"Wrong format!", Toast.LENGTH_SHORT).show();
-                } else {
-                    resultBar.setText(resultBar.getText() + "*");
-                    digitsNOperatorsLists.addOperatorList("*");
-                    mathematicOperations.moreThanOneOperatorException(digitsNOperatorsLists.operatorList);
-                }
+                addOperandToList("*");
             }
         });
 
         buttonDivision.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                vibrate();
-                if (mathematicOperations.operatorAtStart(digitsNOperatorsLists.operatorList)) {
-                    Toast.makeText(getApplicationContext(),"Wrong format!", Toast.LENGTH_SHORT).show();
-                } else {
-                    resultBar.setText(resultBar.getText() + "/");
-                    digitsNOperatorsLists.addOperatorList("/");
-                    mathematicOperations.moreThanOneOperatorException(digitsNOperatorsLists.operatorList);
-                }
+                addOperandToList("/");
             }
         });
 
@@ -204,12 +178,13 @@ public class Main extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 vibrate();
-                System.out.println(digitsNOperatorsLists.operatorList);
-                if(mathematicOperations.operatorAtTheEndException(digitsNOperatorsLists.operatorList)){
-                    Toast.makeText(getApplicationContext(),"Wrong format!", Toast.LENGTH_SHORT).show();
+                if(mathematicOperations.operatorAtStart()||mathematicOperations.operatorAtTheEndException()) {
+                    Toast.makeText(getApplicationContext(), "Wrong format!", Toast.LENGTH_SHORT).show();
+                }else if(mathematicOperations.checkIfDevideByZero()) {
+                    Toast.makeText(getApplicationContext(), "Devide by Zero!", Toast.LENGTH_SHORT).show();
                 }else {
-                    result = mathematicOperations.calculation(digitsNOperatorsLists.operatorList);
-                    resultBar.setText(result);
+                    result = mathematicOperations.calculation();
+                    resultBar.setText(displaingNumberExceptions.cutZeroFromInt(result));
                 }
             }
         });
@@ -219,32 +194,31 @@ public class Main extends AppCompatActivity {
                 vibrate();
                 resultBar.setText(null);
                 digitsNOperatorsLists.clearOperatorList();
-                digitsNOperatorsLists.resetNumberOfDigits();
             }
         });
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(digitsNOperatorsLists.numberOfDigits!=0) {
-                    vibrate();
-                    resultBar.setText(null);
-                    digitsNOperatorsLists.decrementNumberOfDigits();
+                vibrate();
+                if(digitsNOperatorsLists.operatorList.size()!=0) {
+                    mathematicOperations.removeOneElement();
+                    resultBar.setText(digitsNOperatorsLists.convertToString());
                 }
             }
         });
         buttonComa.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addToList(".");
+                if(dotFlag){addDigitToList(".");}
+                dotFlag=false;
             }
         });
         buttonPM.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 vibrate();
-                mathematicOperations.negativNuber(digitsNOperatorsLists.operatorList);
-                changingMark();
-                //TODO wyświetlanie minusa przy liczbie na ekranie
+                mathematicOperations.negativNuber();
+                resultBar.setText(displaingNumberExceptions.showingMinusOnDisplay());
             }
         });
 
@@ -262,28 +236,33 @@ public class Main extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(),"work in progres...", Toast.LENGTH_SHORT).show();
             }
         });
+        resultBar.setKeyListener(null);
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), com.example.kuba.calculator.Menu.class);
+                startActivity(intent);
+            }
+        });
     }
 
-    void addToList(String mark){
+    void addDigitToList(String mark){
         vibrate();
         resultBar.setText(resultBar.getText() + mark);
         digitsNOperatorsLists.addOperatorList(mark);
-        digitsNOperatorsLists.incrementNumberOfDigits();
     }
 
-    void changingMark(){
-        String returnValue="";
-
-        mathematicOperations.connectDigits(digitsNOperatorsLists.operatorList);
-        for (int i =0;i<digitsNOperatorsLists.operatorList.size()-1;i++)
-        {
-            returnValue += digitsNOperatorsLists.operatorList.get(i);
+    void addOperandToList(String mark){
+        vibrate();
+        if (mathematicOperations.operatorAtStart()) {
+            Toast.makeText(getApplicationContext(),"Wrong format!", Toast.LENGTH_SHORT).show();
+        } else {
+            digitsNOperatorsLists.addOperatorList(mark);
+            mathematicOperations.moreThanOneOperatorException();
+            resultBar.setText(digitsNOperatorsLists.convertToString());
         }
-        String tmp = digitsNOperatorsLists.operatorList.get(digitsNOperatorsLists.operatorList.size()-1);
-        returnValue = returnValue + "(" + tmp +")";
-        resultBar.setText(returnValue);
+        dotFlag=true;
     }
-
 
     void vibrate(){
         Vibrator vb = (Vibrator) getApplicationContext().getSystemService(Context.VIBRATOR_SERVICE);
