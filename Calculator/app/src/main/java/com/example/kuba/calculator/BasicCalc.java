@@ -2,21 +2,14 @@ package com.example.kuba.calculator;
 
 import android.content.Context;
 import android.content.Intent;
-import android.media.Image;
 import android.os.Vibrator;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
-
-import javax.xml.transform.Result;
-import java.util.ArrayList;
-import java.util.List;
 
 import static android.telephony.PhoneNumberUtils.compare;
 
@@ -28,7 +21,7 @@ public class BasicCalc extends AppCompatActivity {
     ImageButton deleteButton, backButton;
     EditText resultBar ;
     String result;
-    boolean zeroFlag, dotFlag;
+    boolean zeroFlag, dotFlag, minusFlag, digitAfterEqualFlag;
     DigitsNOperatorsLists digitsNOperatorsLists;
     MathematicOperations mathematicOperations;
     DisplaingNumberExceptions displaingNumberExceptions;
@@ -36,14 +29,24 @@ public class BasicCalc extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
 
         digitsNOperatorsLists = new DigitsNOperatorsLists();
-        mathematicOperations = new MathematicOperations(digitsNOperatorsLists.operatorList);
-        displaingNumberExceptions = new DisplaingNumberExceptions(digitsNOperatorsLists,mathematicOperations);
         zeroFlag=true;
         dotFlag = true;
+        minusFlag = false;
+        digitAfterEqualFlag = false;
         result="";
+
+        if (savedInstanceState != null) {
+            digitsNOperatorsLists.operatorList = savedInstanceState.getStringArrayList("operatorList");
+            System.out.println(digitsNOperatorsLists.getOperatorList());
+//            Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+        }
+
+        mathematicOperations = new MathematicOperations(digitsNOperatorsLists.operatorList);
+        displaingNumberExceptions = new DisplaingNumberExceptions(digitsNOperatorsLists,mathematicOperations);
 
         button0 = (Button) findViewById(R.id.button0);
         button1 = (Button) findViewById(R.id.button1);
@@ -60,10 +63,10 @@ public class BasicCalc extends AppCompatActivity {
         buttonSub = (Button) findViewById(R.id.buttonMinus);
         buttonMul = (Button) findViewById(R.id.buttonMultiply);
         buttonDivision = (Button) findViewById(R.id.buttonDevide);
-        buttonC = (Button) findViewById(R.id.buttonC);
+        buttonC = (Button) findViewById(R.id.buttonTan);
         buttonEqual = (Button) findViewById(R.id.buttonResult);
-        buttonBrackets = (Button) findViewById(R.id.buttonBrackets);
-        buttonModulo = (Button) findViewById(R.id.buttonModulo);
+        buttonBrackets = (Button) findViewById(R.id.buttonPow2);
+        buttonModulo = (Button) findViewById(R.id.buttonPowPow);
         resultBar = (EditText) findViewById(R.id.resultBar);
         deleteButton = (ImageButton) findViewById(R.id.deleteButton);
         buttonPM = (Button) findViewById(R.id.buttonPM);
@@ -185,7 +188,11 @@ public class BasicCalc extends AppCompatActivity {
                 }else {
                     result = mathematicOperations.calculation();
                     resultBar.setText(displaingNumberExceptions.cutZeroFromInt(result));
+                    digitAfterEqualFlag = true;
+                    minusFlag=false;
                 }
+//                digitsNOperatorsLists.clearOperatorList();
+
             }
         });
         buttonC.setOnClickListener(new View.OnClickListener() {
@@ -194,6 +201,8 @@ public class BasicCalc extends AppCompatActivity {
                 vibrate();
                 resultBar.setText(null);
                 digitsNOperatorsLists.clearOperatorList();
+                digitAfterEqualFlag = false;
+                minusFlag=false;
             }
         });
         deleteButton.setOnClickListener(new View.OnClickListener() {
@@ -209,16 +218,27 @@ public class BasicCalc extends AppCompatActivity {
         buttonComa.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(dotFlag){addDigitToList(".");}
-                dotFlag=false;
+                if(dotFlag && !mathematicOperations.onlyDot()) {
+                    addDigitToList(".");
+                    dotFlag = false;
+                }else {
+                    Toast.makeText(getApplicationContext(),"Wrong format!", Toast.LENGTH_SHORT).show();
+                }
             }
         });
         buttonPM.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 vibrate();
-                mathematicOperations.negativNuber();
-                resultBar.setText(displaingNumberExceptions.showingMinusOnDisplay());
+                if(mathematicOperations.operatorAtStart()) {
+                    Toast.makeText(getApplicationContext(),"Wrong format!", Toast.LENGTH_SHORT).show();
+                }else if (mathematicOperations.negativAfterOperator()){
+                    Toast.makeText(getApplicationContext(),"Wrong format!", Toast.LENGTH_SHORT).show();
+                } else {
+                    mathematicOperations.negativNuber();
+                    resultBar.setText(displaingNumberExceptions.showingMinusOnDisplay());
+                    minusFlag=true;
+                }
             }
         });
 
@@ -248,8 +268,10 @@ public class BasicCalc extends AppCompatActivity {
 
     void addDigitToList(String mark){
         vibrate();
-        resultBar.setText(resultBar.getText() + mark);
-        digitsNOperatorsLists.addOperatorList(mark);
+        if(!minusFlag && !digitAfterEqualFlag) {
+            resultBar.setText(resultBar.getText() + mark);
+            digitsNOperatorsLists.addOperatorList(mark);
+        }
     }
 
     void addOperandToList(String mark){
@@ -260,13 +282,26 @@ public class BasicCalc extends AppCompatActivity {
             digitsNOperatorsLists.addOperatorList(mark);
             mathematicOperations.moreThanOneOperatorException();
             resultBar.setText(digitsNOperatorsLists.convertToString());
+
+            dotFlag=true;
+            minusFlag =  false;
+            digitAfterEqualFlag = false;
         }
-        dotFlag=true;
     }
 
     void vibrate(){
         Vibrator vb = (Vibrator) getApplicationContext().getSystemService(Context.VIBRATOR_SERVICE);
         vb.vibrate(5);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        // Make sure to call the super method so that the states of our views are saved
+        outState.putStringArrayList("operatorList", digitsNOperatorsLists.operatorList);
+
+        super.onSaveInstanceState(outState);
+        // Save our own state now
+//        outState.putSerializable(STATE_ITEMS, outState);
     }
 
 

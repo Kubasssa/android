@@ -19,6 +19,7 @@ public class MathematicOperations {
 
     String calculation(){
         connectDigits();
+        System.out.println(listOfNumbers);
         while(listOfNumbers.size()!=1){
             listOfNumbers = subCalculation();
         }
@@ -29,8 +30,9 @@ public class MathematicOperations {
 
     List<String> subCalculation(){
         for(int i=0;i<listOfNumbers.size();i++){
-            if(listOfNumbers.get(i).equals("*")||listOfNumbers.get(i).equals("/")||listOfNumbers.get(i).equals("+")||listOfNumbers.get(i).equals("-")) {
+            if(listOfNumbers.get(i).equals("*")||listOfNumbers.get(i).equals("/")||listOfNumbers.get(i).equals("+")||listOfNumbers.get(i).equals("-")||listOfNumbers.get(i).equals("^")) {
                 listOfNumbers = operatorFunction( i, listOfNumbers.get(i));
+                i--;
             }
         }
         return listOfNumbers;
@@ -45,13 +47,18 @@ public class MathematicOperations {
                 tmp = Double.parseDouble(listOfNumbers.get(i - 1)) * Double.parseDouble(listOfNumbers.get(i + 1));
                 break;
             case "/":
-                    tmp = Double.parseDouble(listOfNumbers.get(i - 1)) / Double.parseDouble(listOfNumbers.get(i + 1));
+                tmp = Double.parseDouble(listOfNumbers.get(i - 1)) / Double.parseDouble(listOfNumbers.get(i + 1));
                 break;
             case "+":
                 tmp = Double.parseDouble(listOfNumbers.get(i - 1)) + Double.parseDouble(listOfNumbers.get(i + 1));
                 break;
             case "-":
                 tmp = Double.parseDouble(listOfNumbers.get(i - 1)) - Double.parseDouble(listOfNumbers.get(i + 1));
+                break;
+            case "^":
+                System.out.println(listOfNumbers);
+                tmp = Math.pow(Double.parseDouble(listOfNumbers.get(i - 1)) , Double.parseDouble(listOfNumbers.get(i + 1)) );
+                System.out.println(listOfNumbers);
                 break;
         }
 
@@ -62,6 +69,62 @@ public class MathematicOperations {
         return listOfNumbers;
     }
 
+    String sinus(){
+        Double result = Math.sin(Math.toRadians(Double.parseDouble(calculation())));
+        listOfNumbers.set(0, Double.toString(result));
+        return Double.toString(result);
+    }
+
+    String cosiunus(){
+        Double result = Math.cos(Math.toRadians(Double.parseDouble(calculation())));
+        listOfNumbers.set(0, Double.toString(result));
+        return Double.toString(result);
+    }
+
+    String tangens(){
+        Double result = Math.tan(Math.toRadians(Double.parseDouble(calculation())));
+        listOfNumbers.set(0, Double.toString(result));
+        return Double.toString(result);
+    }
+
+    String logarytm(){
+        Double result = Math.tan(Math.toRadians(Double.parseDouble(calculation())));
+        listOfNumbers.set(0, Double.toString(result));
+        return Double.toString(result);
+    }
+
+    String logNat(){
+        Double result = Math.log(Double.parseDouble(calculation()));
+        listOfNumbers.set(0, Double.toString(result));
+        return Double.toString(result);
+    }
+
+    String square(){
+        Double result = Math.sqrt(Double.parseDouble(calculation()));
+        listOfNumbers.set(0, Double.toString(result));
+        return Double.toString(result);
+    }
+
+    String power(){
+        Double result = Math.pow(Double.parseDouble(calculation()),2);
+        listOfNumbers.set(0, Double.toString(result));
+        return Double.toString(result);
+    }
+
+    String powerToPower(){
+        Double result = Math.tan(Math.toRadians(Double.parseDouble(calculation())));
+        listOfNumbers.set(0, Double.toString(result));
+        return Double.toString(result);
+    }
+
+    boolean biggerThanZero(){
+        boolean result = true;
+
+        Double tmp = Double.parseDouble(calculation());
+        if(tmp < 0) result = false;
+
+        return result;
+    }
 
     List<String> connectDigits(){
         String tmpDigit="";
@@ -85,7 +148,7 @@ public class MathematicOperations {
     boolean operatorAtTheEndException(){
         int lastElement = listOfNumbers.size()-1;
         boolean x = false;
-        if(listOfNumbers.get(lastElement).equals("+")||listOfNumbers.get(lastElement).equals("-")||listOfNumbers.get(lastElement).equals("*")||listOfNumbers.get(lastElement).equals("/")){
+        if(listOfNumbers.get(lastElement).equals("+")||listOfNumbers.get(lastElement).equals("-")||listOfNumbers.get(lastElement).equals("*")||listOfNumbers.get(lastElement).equals("/") ||listOfNumbers.get(lastElement).equals("^")){
             x=true;
         }
         return x;
@@ -99,6 +162,7 @@ public class MathematicOperations {
         tmpList.add("-");
         tmpList.add("*");
         tmpList.add("/");
+        tmpList.add("^");
 
         if(tmpList.contains(listOfNumbers.get(lastElement))&&tmpList.contains(listOfNumbers.get(secondLastElement))){
             listOfNumbers.set(secondLastElement,listOfNumbers.get(lastElement));
@@ -121,6 +185,22 @@ public class MathematicOperations {
         listOfNumbers.set(listOfNumbers.size()-1,Double.toString(tmp));
     }
 
+    boolean negativAfterOperator(){
+        boolean result = false;
+        int lastElement = listOfNumbers.size()-1;
+        List<String> tmpList = new ArrayList<>();
+        tmpList.add("+");
+        tmpList.add("-");
+        tmpList.add("*");
+        tmpList.add("/");
+        tmpList.add("^");
+
+        if(tmpList.contains(listOfNumbers.get(lastElement))){
+            result = true;
+        }
+        return result;
+    }
+
     void removeOneElement(){
         connectDigits();
         listOfNumbers.remove(listOfNumbers.size()-1);
@@ -136,4 +216,26 @@ public class MathematicOperations {
         }
         return result;
     }
+
+    boolean onlyDot(){
+        boolean result=false;
+        List<String> tmpList = new ArrayList<>();
+        tmpList.add("0");
+        tmpList.add("1");
+        tmpList.add("2");
+        tmpList.add("3");
+        tmpList.add("4");
+        tmpList.add("5");
+        tmpList.add("6");
+        tmpList.add("7");
+        tmpList.add("8");
+        tmpList.add("9");
+//        System.out.println(listOfNumbers);
+        if (listOfNumbers.isEmpty()||!tmpList.contains(listOfNumbers.get(listOfNumbers.size()-1)) ) {
+            result = true;
+        }
+
+        return  result;
+    }
+
 }
