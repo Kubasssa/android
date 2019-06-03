@@ -11,15 +11,17 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import java.math.BigDecimal;
+
 public class AdvancedCalc extends AppCompatActivity {
 
     Button button0 , button1 , button2 , button3 , button4 , button5 , button6 ,
             button7 , button8 , button9 , buttonAdd , buttonSub , buttonDivision ,
-            buttonMul , buttonBrackets , buttonModulo,  buttonC , buttonComa ,  buttonEqual, buttonPM, tangBtn, powPowBtn, pow2Btn, sinBtn, cosBtn, lnBtn, logBtn, percentBtn, sqrtBtn;
+            buttonMul ,  buttonC,buttonAC , buttonComa ,  buttonEqual, buttonPM, tangBtn, powPowBtn, pow2Btn, sinBtn, cosBtn, lnBtn, logBtn, percentBtn, sqrtBtn;
     ImageButton deleteButton, backButton;
     EditText resultBar ;
     String result;
-    boolean zeroFlag, dotFlag, minusFlag, digitAfterEqualFlag;
+    boolean zeroFlag, dotFlag, minusFlag, digitAfterEqualFlag, cFlag;
     DigitsNOperatorsLists digitsNOperatorsLists;
     MathematicOperations mathematicOperations;
     DisplaingNumberExceptions displaingNumberExceptions;
@@ -34,6 +36,7 @@ public class AdvancedCalc extends AppCompatActivity {
         dotFlag = true;
         minusFlag = false;
         digitAfterEqualFlag = false;
+        cFlag = true;
         result="";
 
         if (savedInstanceState != null) {
@@ -61,9 +64,8 @@ public class AdvancedCalc extends AppCompatActivity {
         buttonMul = (Button) findViewById(R.id.buttonMultiply);
         buttonDivision = (Button) findViewById(R.id.buttonDevide);
         buttonC = (Button) findViewById(R.id.buttonC);
+        buttonAC = (Button) findViewById(R.id.buttonAC);
         buttonEqual = (Button) findViewById(R.id.buttonResult);
-        buttonBrackets = (Button) findViewById(R.id.buttonPow2);
-        buttonModulo = (Button) findViewById(R.id.buttonPowPow);
         resultBar = (EditText) findViewById(R.id.resultBar);
         deleteButton = (ImageButton) findViewById(R.id.deleteButton);
         buttonPM = (Button) findViewById(R.id.buttonPM);
@@ -76,6 +78,7 @@ public class AdvancedCalc extends AppCompatActivity {
         sqrtBtn = (Button) findViewById(R.id.buttonSqrt);
         pow2Btn = (Button) findViewById(R.id.buttonPow2);
         powPowBtn = (Button) findViewById(R.id.buttonPowPow);
+        percentBtn = (Button) findViewById(R.id.buttonPerc);
 
 
         button1.setOnClickListener(new View.OnClickListener() {
@@ -191,10 +194,11 @@ public class AdvancedCalc extends AppCompatActivity {
                 }else if(mathematicOperations.checkIfDevideByZero()) {
                     Toast.makeText(getApplicationContext(), "Devide by Zero!", Toast.LENGTH_SHORT).show();
                 }else {
-                    result = mathematicOperations.calculation();
-                    resultBar.setText(displaingNumberExceptions.cutZeroFromInt(result));
+                    double finalResult = Math.round(Double.parseDouble(mathematicOperations.calculation()) * 10000.0) / 10000.0;
+                    resultBar.setText(displaingNumberExceptions.cutZeroFromInt(Double.toString(finalResult)));
                     digitAfterEqualFlag = true;
                     minusFlag=false;
+                    dotFlag=true;
                 }
             }
         });
@@ -202,10 +206,35 @@ public class AdvancedCalc extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 vibrate();
+                if(!digitsNOperatorsLists.operatorList.isEmpty()) {
+                    if (cFlag) {
+
+                        mathematicOperations.removeOneElement();
+                        resultBar.setText(digitsNOperatorsLists.convertToString());
+                        minusFlag = false;
+                        digitAfterEqualFlag = false;
+                        dotFlag=true;
+                        cFlag = false;
+                    } else {
+                        resultBar.setText(null);
+                        digitsNOperatorsLists.clearOperatorList();
+                        digitAfterEqualFlag = false;
+                        minusFlag = false;
+                        dotFlag=true;
+                        cFlag = true;
+                    }
+                }
+            }
+        });
+        buttonAC.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                vibrate();
                 resultBar.setText(null);
                 digitsNOperatorsLists.clearOperatorList();
                 digitAfterEqualFlag = false;
                 minusFlag=false;
+                dotFlag = true;
             }
         });
         deleteButton.setOnClickListener(new View.OnClickListener() {
@@ -242,21 +271,6 @@ public class AdvancedCalc extends AppCompatActivity {
                     resultBar.setText(displaingNumberExceptions.showingMinusOnDisplay());
                     minusFlag=true;
                 }
-            }
-        });
-
-        buttonBrackets.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                vibrate();
-                Toast.makeText(getApplicationContext(),"work in progres...", Toast.LENGTH_SHORT).show();
-            }
-        });
-        buttonModulo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                vibrate();
-                Toast.makeText(getApplicationContext(),"work in progres...", Toast.LENGTH_SHORT).show();
             }
         });
         resultBar.setKeyListener(null);
@@ -362,6 +376,29 @@ public class AdvancedCalc extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 addOperandToList("^");
+            }
+        });
+
+        percentBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addOperandToList("%");
+            }
+        });
+
+        logBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(mathematicOperations.operatorAtStart()) {
+                    Toast.makeText(getApplicationContext(),"value less than 0", Toast.LENGTH_SHORT).show();
+                }else if(mathematicOperations.operatorAtTheEndException()){
+                    Toast.makeText(getApplicationContext(), "Wrong format!", Toast.LENGTH_SHORT).show();
+                }else if(!mathematicOperations.biggerThanZero()){
+                    Toast.makeText(getApplicationContext(), "Wrong format!", Toast.LENGTH_SHORT).show();
+                } else {
+                    resultBar.setText(mathematicOperations.log());
+                    digitAfterEqualFlag = true;
+                }
             }
         });
     }

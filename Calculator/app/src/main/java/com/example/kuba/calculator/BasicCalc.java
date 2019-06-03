@@ -11,20 +11,23 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import java.math.BigDecimal;
+
 import static android.telephony.PhoneNumberUtils.compare;
 
 public class BasicCalc extends AppCompatActivity {
 
     Button button0 , button1 , button2 , button3 , button4 , button5 , button6 ,
             button7 , button8 , button9 , buttonAdd , buttonSub , buttonDivision ,
-            buttonMul , buttonBrackets , buttonModulo,  buttonC , buttonComa ,  buttonEqual, buttonPM;
+            buttonMul , buttonPerc,  buttonC, buttonAC , buttonComa ,  buttonEqual, buttonPM;
     ImageButton deleteButton, backButton;
     EditText resultBar ;
     String result;
-    boolean zeroFlag, dotFlag, minusFlag, digitAfterEqualFlag;
+    boolean zeroFlag, dotFlag, minusFlag, digitAfterEqualFlag,cFlag, firstZeroFlag;
     DigitsNOperatorsLists digitsNOperatorsLists;
     MathematicOperations mathematicOperations;
     DisplaingNumberExceptions displaingNumberExceptions;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +40,8 @@ public class BasicCalc extends AppCompatActivity {
         dotFlag = true;
         minusFlag = false;
         digitAfterEqualFlag = false;
+        cFlag = true;
+        firstZeroFlag = true;
         result="";
 
         if (savedInstanceState != null) {
@@ -64,13 +69,13 @@ public class BasicCalc extends AppCompatActivity {
         buttonMul = (Button) findViewById(R.id.buttonMultiply);
         buttonDivision = (Button) findViewById(R.id.buttonDevide);
         buttonC = (Button) findViewById(R.id.buttonTan);
+        buttonAC = (Button) findViewById(R.id.buttonAC);
         buttonEqual = (Button) findViewById(R.id.buttonResult);
-        buttonBrackets = (Button) findViewById(R.id.buttonPow2);
-        buttonModulo = (Button) findViewById(R.id.buttonPowPow);
         resultBar = (EditText) findViewById(R.id.resultBar);
         deleteButton = (ImageButton) findViewById(R.id.deleteButton);
         buttonPM = (Button) findViewById(R.id.buttonPM);
         backButton = (ImageButton) findViewById(R.id.backButton);
+        buttonPerc = (Button) findViewById(R.id.buttonPowPow);
 
 
         button1.setOnClickListener(new View.OnClickListener() {
@@ -186,10 +191,16 @@ public class BasicCalc extends AppCompatActivity {
                 }else if(mathematicOperations.checkIfDevideByZero()) {
                     Toast.makeText(getApplicationContext(), "Devide by Zero!", Toast.LENGTH_SHORT).show();
                 }else {
-                    result = mathematicOperations.calculation();
-                    resultBar.setText(displaingNumberExceptions.cutZeroFromInt(result));
+                    double finalResult = Math.round(Double.parseDouble(mathematicOperations.calculation()) * 10000.0) / 10000.0;
+                    resultBar.setText(displaingNumberExceptions.cutZeroFromInt(Double.toString(finalResult)));
+
+//                    double big = 0.33333333333333;
+//                    double roundOff = Math.round(big * 100.0) / 100.0;
+//                    System.out.println(roundOff);
+
                     digitAfterEqualFlag = true;
                     minusFlag=false;
+                    cFlag = true;
                 }
 //                digitsNOperatorsLists.clearOperatorList();
 
@@ -199,10 +210,34 @@ public class BasicCalc extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 vibrate();
+                if(!digitsNOperatorsLists.operatorList.isEmpty()) {
+                    if (cFlag) {
+                        mathematicOperations.removeOneElement();
+                        resultBar.setText(digitsNOperatorsLists.convertToString());
+                        minusFlag = false;
+                        digitAfterEqualFlag = false;
+                        dotFlag=true;
+                        cFlag = false;
+                    } else {
+                        resultBar.setText(null);
+                        digitsNOperatorsLists.clearOperatorList();
+                        digitAfterEqualFlag = false;
+                        minusFlag = false;
+                        cFlag = true;
+                        dotFlag = true;
+                    }
+                }
+            }
+        });
+        buttonAC.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                vibrate();
                 resultBar.setText(null);
                 digitsNOperatorsLists.clearOperatorList();
                 digitAfterEqualFlag = false;
                 minusFlag=false;
+                dotFlag = true;
             }
         });
         deleteButton.setOnClickListener(new View.OnClickListener() {
@@ -242,20 +277,14 @@ public class BasicCalc extends AppCompatActivity {
             }
         });
 
-        buttonBrackets.setOnClickListener(new View.OnClickListener() {
+        buttonPerc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 vibrate();
-                Toast.makeText(getApplicationContext(),"work in progres...", Toast.LENGTH_SHORT).show();
+                addOperandToList("%");
             }
         });
-        buttonModulo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                vibrate();
-                Toast.makeText(getApplicationContext(),"work in progres...", Toast.LENGTH_SHORT).show();
-            }
-        });
+
         resultBar.setKeyListener(null);
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -269,8 +298,14 @@ public class BasicCalc extends AppCompatActivity {
     void addDigitToList(String mark){
         vibrate();
         if(!minusFlag && !digitAfterEqualFlag) {
-            resultBar.setText(resultBar.getText() + mark);
-            digitsNOperatorsLists.addOperatorList(mark);
+            if(digitsNOperatorsLists.operatorList.size() == 1) {
+                if(digitsNOperatorsLists.operatorList.get(0) != "0" )
+                resultBar.setText(resultBar.getText() + mark);
+                digitsNOperatorsLists.addOperatorList(mark);
+            }else{
+                resultBar.setText(resultBar.getText() + mark);
+                digitsNOperatorsLists.addOperatorList(mark);
+            }
         }
     }
 

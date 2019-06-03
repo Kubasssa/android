@@ -23,7 +23,7 @@
             app:layout_constraintTop_toBottomOf="@+id/buttonSin" android:layout_marginBottom="10dp"
             app:layout_constraintBottom_toTopOf="@+id/button7"
             app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginStart="16dp" app:layout_constraintEnd_toStartOf="@+id/buttonPow2"
+            android:layout_marginStart="16dp" app:layout_constraintEnd_toStartOf="@+id/buttonAC"
             android:layout_marginEnd="8dp" android:background="#1a1a1a"
             android:textColor="#1a8cff" android:textSize="20sp" android:text="TAN"/>
     <Button
@@ -130,7 +130,7 @@
             android:id="@+id/buttonPowPow"
             app:layout_constraintTop_toBottomOf="@+id/buttonLog" android:layout_marginBottom="10dp"
             app:layout_constraintBottom_toTopOf="@+id/button9"
-            app:layout_constraintStart_toEndOf="@+id/buttonPow2"
+            app:layout_constraintStart_toEndOf="@+id/buttonAC"
             android:layout_marginStart="8dp" app:layout_constraintEnd_toStartOf="@+id/buttonDevide"
             android:layout_marginEnd="8dp" android:background="#1a1a1a"
             android:textColor="#1a8cff" android:textSize="20sp"/>

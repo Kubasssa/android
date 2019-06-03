@@ -24,6 +24,8 @@ public class LocalizationDialog extends AppCompatDialogFragment {
 
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View view = inflater.inflate(R.layout.dialog,null);
+        latitude = view.findViewById(R.id.latitude);
+        longitude = view.findViewById(R.id.longitude);
 
         builder.setView(view).setTitle("Localization")
                 .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
@@ -39,15 +41,21 @@ public class LocalizationDialog extends AppCompatDialogFragment {
                         String latitudeValue = latitude.getText().toString();
                         String longitudeValue = longitude.getText().toString();
 
-                        if(latitudeValue.matches("")){
+                        if (!latitudeValue.matches("") && !longitudeValue.matches("")) {
+                            if(Double.parseDouble(latitudeValue) > -90 && Double.parseDouble(latitudeValue) < 90 && Double.parseDouble(longitudeValue) > -180 && Double.parseDouble(longitudeValue) < 180   ) {
+                                Localization.settLatitude(Double.parseDouble(latitudeValue));
+                                Localization.setLongitude(Double.parseDouble(longitudeValue));
+                            }else Toast.makeText(getActivity(), "latitude must be > -90 and < 90, Longitude must be > -180 and < 180", Toast.LENGTH_SHORT).show();
+                        }
+
+                        if (latitudeValue.matches("")) {
                             Toast.makeText(getActivity(), "You did not enter a lattitude value", Toast.LENGTH_SHORT).show();
 //                            return;
-                        }else{Localization.settLatitude(Double.parseDouble(latitudeValue));}
-
-                        if(longitudeValue.matches("")){
+                        } else if (longitudeValue.matches("")) {
                             Toast.makeText(getActivity(), "You did not enter a longitude value", Toast.LENGTH_SHORT).show();
 //                            return;
-                        }else{Localization.setLongitude(Double.parseDouble(longitudeValue));}
+                        }
+
 
 //                        FragmentTransaction ft = getFragmentManager().beginTransaction();
 //                        ft.detach(SunFragment.this).attach(YourFragment.this).commit();

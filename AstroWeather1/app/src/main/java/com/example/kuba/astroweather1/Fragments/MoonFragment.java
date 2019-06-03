@@ -50,6 +50,7 @@ public class MoonFragment extends Fragment {
         latitude.setText(Localization.getLatitude().toString());
         longitude.setText(Localization.getLongitude().toString());
 
+
         final Handler someHandler = new Handler(getMainLooper());
         someHandler.postDelayed(new Runnable() {
             @Override
@@ -63,17 +64,15 @@ public class MoonFragment extends Fragment {
             @Override
             public void run() {
                 someHandler.postDelayed(this, 10);
-                latitude.setText(Localization.getLatitude().toString());
-                longitude.setText(Localization.getLongitude().toString());
-//
-                astroCalc.setLocation(Localization.location);
 
-                moonrise.setText(astroCalc.getMoonrise().toString());
-                moonset.setText(astroCalc.getMoonset().toString());
-                nextFullMoon.setText(astroCalc.getNextFullMoon().toString());
-                nextNewMoon.setText(astroCalc.getNextNewMoon().toString());
-                ilumination.setText(Double.toString(astroCalc.getIlumination()));
-                age.setText(Double.toString(astroCalc.getAge()));
+                if(!latitude.getText().equals(Localization.getLatitude().toString()) && !longitude.getText().equals(Localization.getLongitude().toString())) {
+                    latitude.setText(Localization.getLatitude().toString());
+                    longitude.setText(Localization.getLongitude().toString());
+                    astroCalc.setLocation(Localization.location);
+                    setTtime();
+                    astroCalc.setDateTime(AstroDT.astroDateTime);
+                    setData();
+                }
 
                 refreshTime = Localization.getRefreshTime();
 
@@ -87,6 +86,8 @@ public class MoonFragment extends Fragment {
                 someHandler.postDelayed(this, 60000 * refreshTime);
                 setTtime();
                 astroCalc.setDateTime(AstroDT.astroDateTime);
+
+                setData();
 
             }
         }, 10);
@@ -110,4 +111,13 @@ public class MoonFragment extends Fragment {
         System.out.println(new SimpleDateFormat("mm", Locale.US).format(new Date()));
         System.out.println(new SimpleDateFormat("ss", Locale.US).format(new Date()));
     };
+
+    public void setData(){
+        moonrise.setText(astroCalc.getMoonrise().toString());
+        moonset.setText(astroCalc.getMoonset().toString());
+        nextFullMoon.setText(astroCalc.getNextFullMoon().toString());
+        nextNewMoon.setText(astroCalc.getNextNewMoon().toString());
+        ilumination.setText(Double.toString(astroCalc.getIlumination()));
+        age.setText(Double.toString(astroCalc.getAge()));
+    }
 }

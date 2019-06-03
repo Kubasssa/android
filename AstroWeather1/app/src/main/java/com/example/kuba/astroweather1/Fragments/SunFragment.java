@@ -70,20 +70,18 @@ public class SunFragment extends Fragment  {
             @Override
             public void run() {
                 someHandler.postDelayed(this, 10);
-                latitude.setText(Localization.getLatitude().toString());
-                longitude.setText(Localization.getLongitude().toString());
 
-                astroCalc.setLocation(Localization.location);
 
-                sunrise.setText(astroCalc.getSunrise().toString());
-                sunset.setText(astroCalc.getSunset().toString());
-                azimuthRise.setText(Double.toString(astroCalc.getAzimuthRise()));
-                azimuthSet.setText(Double.toString(astroCalc.getAzimuthSet()));
-                twilightEvening.setText(astroCalc.getTwilightEvening().toString());
-                twilightMorning.setText(astroCalc.getTwilightMorning().toString());
+                if(!latitude.getText().equals(Localization.getLatitude().toString()) && !longitude.getText().equals(Localization.getLongitude().toString())) {
+                    latitude.setText(Localization.getLatitude().toString());
+                    longitude.setText(Localization.getLongitude().toString());
+                    astroCalc.setLocation(Localization.location);
+                    setTtime();
+                    astroCalc.setDateTime(AstroDT.astroDateTime);
+                    setData();
+                }
 
                 refreshTime = Localization.getRefreshTime();
-
             }
         }, 10);
 
@@ -94,6 +92,8 @@ public class SunFragment extends Fragment  {
                 someHandler.postDelayed(this, 60000 * refreshTime);
                 setTtime();
                 astroCalc.setDateTime(AstroDT.astroDateTime);
+
+                setData();
 
             }
         }, 10);
@@ -117,5 +117,15 @@ public class SunFragment extends Fragment  {
         System.out.println(new SimpleDateFormat("mm", Locale.US).format(new Date()));
         System.out.println(new SimpleDateFormat("ss", Locale.US).format(new Date()));
     };
+
+    public void setData(){
+        sunrise.setText(astroCalc.getSunrise().toString());
+        sunset.setText(astroCalc.getSunset().toString());
+        azimuthRise.setText(Double.toString(astroCalc.getAzimuthRise()));
+        azimuthSet.setText(Double.toString(astroCalc.getAzimuthSet()));
+        twilightEvening.setText(astroCalc.getTwilightEvening().toString());
+        twilightMorning.setText(astroCalc.getTwilightMorning().toString());
+    }
+
 
 }

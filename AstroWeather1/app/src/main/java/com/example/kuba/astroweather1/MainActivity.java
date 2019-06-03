@@ -37,6 +37,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        boolean tabletSize = getResources().getBoolean(R.bool.isTablet);
+        System.out.println(tabletSize);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         // Create the adapter that will return a fragment for each of the three
@@ -45,7 +48,32 @@ public class MainActivity extends AppCompatActivity {
 
         //-----------------------------------------------------------------------orientation settings
         int orientation = getResources().getConfiguration().orientation;
-        if (orientation != Configuration.ORIENTATION_LANDSCAPE) {
+        if (orientation == Configuration.ORIENTATION_LANDSCAPE && tabletSize) {
+            SunFragment sunFragment = new SunFragment();
+            FragmentManager menager = getSupportFragmentManager();
+            menager.beginTransaction().replace(R.id.layoutSun,sunFragment,sunFragment.getTag()).commit();
+
+
+            MoonFragment moonFragment = new MoonFragment();
+            menager.beginTransaction().replace(R.id.layoutMoon,moonFragment,moonFragment.getTag()).commit();
+        }else if (orientation != Configuration.ORIENTATION_LANDSCAPE && tabletSize) {
+
+            SunFragment sunFragment = new SunFragment();
+            FragmentManager menager = getSupportFragmentManager();
+            menager.beginTransaction().replace(R.id.layoutSun,sunFragment,sunFragment.getTag()).commit();
+
+
+            MoonFragment moonFragment = new MoonFragment();
+            menager.beginTransaction().replace(R.id.layoutMoon,moonFragment,moonFragment.getTag()).commit();
+        }else if(orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            SunFragment sunFragment = new SunFragment();
+            FragmentManager menager = getSupportFragmentManager();
+            menager.beginTransaction().replace(R.id.layoutSun,sunFragment,sunFragment.getTag()).commit();
+
+
+            MoonFragment moonFragment = new MoonFragment();
+            menager.beginTransaction().replace(R.id.layoutMoon,moonFragment,moonFragment.getTag()).commit();
+        } else if (orientation != Configuration.ORIENTATION_LANDSCAPE) {
             // Set up the ViewPager with the sections adapter.
             mViewPager = (ViewPager) findViewById(R.id.container);
             mViewPager.setAdapter(mSectionsPagerAdapter);
@@ -54,14 +82,6 @@ public class MainActivity extends AppCompatActivity {
 
             mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
             tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
-        }else {
-            SunFragment sunFragment = new SunFragment();
-            FragmentManager menager = getSupportFragmentManager();
-            menager.beginTransaction().replace(R.id.layoutSun,sunFragment,sunFragment.getTag()).commit();
-
-
-            MoonFragment moonFragment = new MoonFragment();
-            menager.beginTransaction().replace(R.id.layoutMoon,moonFragment,moonFragment.getTag()).commit();
         }
 
 //        // Set up the ViewPager with the sections adapter.

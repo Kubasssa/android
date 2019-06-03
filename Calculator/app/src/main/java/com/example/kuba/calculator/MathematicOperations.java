@@ -24,13 +24,16 @@ public class MathematicOperations {
             listOfNumbers = subCalculation();
         }
 
+        String finalResult = Double.toString(Math.round(Double.parseDouble(listOfNumbers.get(0)) * 10000.0) / 10000.0);
+        listOfNumbers.set(0,finalResult);
+
         return listOfNumbers.get(0);
 
     }
 
     List<String> subCalculation(){
         for(int i=0;i<listOfNumbers.size();i++){
-            if(listOfNumbers.get(i).equals("*")||listOfNumbers.get(i).equals("/")||listOfNumbers.get(i).equals("+")||listOfNumbers.get(i).equals("-")||listOfNumbers.get(i).equals("^")) {
+            if(listOfNumbers.get(i).equals("*")||listOfNumbers.get(i).equals("/")||listOfNumbers.get(i).equals("+")||listOfNumbers.get(i).equals("-")||listOfNumbers.get(i).equals("^")||listOfNumbers.get(i).equals("%")) {
                 listOfNumbers = operatorFunction( i, listOfNumbers.get(i));
                 i--;
             }
@@ -56,9 +59,10 @@ public class MathematicOperations {
                 tmp = Double.parseDouble(listOfNumbers.get(i - 1)) - Double.parseDouble(listOfNumbers.get(i + 1));
                 break;
             case "^":
-                System.out.println(listOfNumbers);
                 tmp = Math.pow(Double.parseDouble(listOfNumbers.get(i - 1)) , Double.parseDouble(listOfNumbers.get(i + 1)) );
-                System.out.println(listOfNumbers);
+                break;
+            case "%":
+                tmp = (Double.parseDouble(listOfNumbers.get(i - 1))/100) * Double.parseDouble(listOfNumbers.get(i + 1));
                 break;
         }
 
@@ -72,49 +76,50 @@ public class MathematicOperations {
     String sinus(){
         Double result = Math.sin(Math.toRadians(Double.parseDouble(calculation())));
         listOfNumbers.set(0, Double.toString(result));
-        return Double.toString(result);
+        BigDecimal finalResult = new BigDecimal(result);
+        return finalResult.toString();
     }
 
     String cosiunus(){
         Double result = Math.cos(Math.toRadians(Double.parseDouble(calculation())));
         listOfNumbers.set(0, Double.toString(result));
-        return Double.toString(result);
+        BigDecimal finalResult = new BigDecimal(result);
+        return finalResult.toString();
     }
 
     String tangens(){
         Double result = Math.tan(Math.toRadians(Double.parseDouble(calculation())));
         listOfNumbers.set(0, Double.toString(result));
-        return Double.toString(result);
+        BigDecimal finalResult = new BigDecimal(result);
+        return finalResult.toString();
     }
 
-    String logarytm(){
-        Double result = Math.tan(Math.toRadians(Double.parseDouble(calculation())));
+    String log(){
+        Double result = Math.log10(Math.toRadians(Double.parseDouble(calculation())));
         listOfNumbers.set(0, Double.toString(result));
-        return Double.toString(result);
+        BigDecimal finalResult = new BigDecimal(result);
+        return finalResult.toString();
     }
 
     String logNat(){
         Double result = Math.log(Double.parseDouble(calculation()));
         listOfNumbers.set(0, Double.toString(result));
-        return Double.toString(result);
+        BigDecimal finalResult = new BigDecimal(result);
+        return finalResult.toString();
     }
 
     String square(){
         Double result = Math.sqrt(Double.parseDouble(calculation()));
         listOfNumbers.set(0, Double.toString(result));
-        return Double.toString(result);
+        BigDecimal finalResult = new BigDecimal(result);
+        return finalResult.toString();
     }
 
     String power(){
         Double result = Math.pow(Double.parseDouble(calculation()),2);
         listOfNumbers.set(0, Double.toString(result));
-        return Double.toString(result);
-    }
-
-    String powerToPower(){
-        Double result = Math.tan(Math.toRadians(Double.parseDouble(calculation())));
-        listOfNumbers.set(0, Double.toString(result));
-        return Double.toString(result);
+        BigDecimal finalResult = new BigDecimal(result);
+        return finalResult.toString();
     }
 
     boolean biggerThanZero(){
@@ -148,7 +153,7 @@ public class MathematicOperations {
     boolean operatorAtTheEndException(){
         int lastElement = listOfNumbers.size()-1;
         boolean x = false;
-        if(listOfNumbers.get(lastElement).equals("+")||listOfNumbers.get(lastElement).equals("-")||listOfNumbers.get(lastElement).equals("*")||listOfNumbers.get(lastElement).equals("/") ||listOfNumbers.get(lastElement).equals("^")){
+        if(listOfNumbers.get(lastElement).equals("+")||listOfNumbers.get(lastElement).equals("-")||listOfNumbers.get(lastElement).equals("*")||listOfNumbers.get(lastElement).equals("/") ||listOfNumbers.get(lastElement).equals("^")||listOfNumbers.get(lastElement).equals("%")){
             x=true;
         }
         return x;
@@ -163,6 +168,7 @@ public class MathematicOperations {
         tmpList.add("*");
         tmpList.add("/");
         tmpList.add("^");
+        tmpList.add("%");
 
         if(tmpList.contains(listOfNumbers.get(lastElement))&&tmpList.contains(listOfNumbers.get(secondLastElement))){
             listOfNumbers.set(secondLastElement,listOfNumbers.get(lastElement));
